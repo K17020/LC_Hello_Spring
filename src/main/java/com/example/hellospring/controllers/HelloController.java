@@ -5,7 +5,10 @@ import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.security.PublicKey;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class HelloController {
@@ -23,18 +26,31 @@ public class HelloController {
         return "Hello " + name;
     }
 
+    public String languageHelp(){
+
+        HashMap<String,String> greetings = new HashMap<>();
+        String htmlValues = "";
+        greetings.put("French","Bonjour");
+        greetings.put("Spanish","Hola");
+        greetings.put("Italian","Ciao");
+        greetings.put("German","Guten Tag");
+        greetings.put("Russian","zdras-tvuy-te");
+
+        for (Map.Entry<String,String> values:greetings.entrySet()){
+            htmlValues += "<option value=" + values.getValue() + ">" + values.getKey() + "</option>\n";
+        }
+        return htmlValues;
+    }
+
     // Creates an HTML form and handles get request methods
     @RequestMapping(value = "hello", method = RequestMethod.GET)
     @ResponseBody
     public String helloForm(){
+
         String html = "<form method='post'>" +
                 "<input type='text' name='name' />" +
-                "<select name = 'language'>" +
-                    "<option value='Bonjour' name='language'>French</option>" +
-                    "<option value='Hola' >Spanish</option>" +
-                    "<option value='Ciao'>Italian</option>"+
-                    "<option value='Guten Tag'>German</option>"+
-                    "<option value='Zdras-tvuy-te'>Russian</option>"+
+                "<select name='language'>" +
+                languageHelp()+
                 "</select>"+
                 "<input type='submit' value='Greet Me!'/>" +
                 "</form>";
@@ -48,7 +64,9 @@ public class HelloController {
         String name = request.getParameter("name");
         String language = request.getParameter("language");
 
-        return  language + " "  + name ;
+        String html = "<h1>"+language +" " + name + "<h1>";
+
+        return  html;
     }
 
     @RequestMapping(value = "hello/{name}")
@@ -62,4 +80,5 @@ public class HelloController {
     public String goodbye(){
         return "redirect:/";
     }
+
 }
