@@ -29,12 +29,12 @@ public class HelloController {
     public String helloForm(){
         String html = "<form method='post'>" +
                 "<input type='text' name='name' />" +
-                "<select name='language'>" +
-                    "<option value='French'>French</option>" +
-                    "<option value='Spanish'>Spanish</option>" +
-                    "<option value='Italian'>Italian</option>"+
-                    "<option value='German'>German</option>"+
-                    "<option value='Russian'>Russian</option>"+
+                "<select name = 'language'>" +
+                    "<option value='Bonjour' name='language'>French</option>" +
+                    "<option value='Hola' >Spanish</option>" +
+                    "<option value='Ciao'>Italian</option>"+
+                    "<option value='Guten Tag'>German</option>"+
+                    "<option value='Zdras-tvuy-te'>Russian</option>"+
                 "</select>"+
                 "<input type='submit' value='Greet Me!'/>" +
                 "</form>";
@@ -46,7 +46,9 @@ public class HelloController {
     @ResponseBody
     public String createMessage(HttpServletRequest request){
         String name = request.getParameter("name");
-        return "Hello " + name;
+        String language = request.getParameter("language");
+
+        return  language + " "  + name ;
     }
 
     @RequestMapping(value = "hello/{name}")
